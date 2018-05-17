@@ -26,5 +26,6 @@ struct Const {
     static let IMG_SETTING: String = "setting"
     static let IMG_LIKE_EXIST: String = "like_exist"
     static let IMG_LIKE_NONE: String = "like_none"
+    static let IMG_COMMENT: String = "comment"
 
 }

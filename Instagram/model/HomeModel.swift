@@ -11,7 +11,7 @@ import FirebaseAuth
 import FirebaseDatabase
 
 /**---------------------------------*
- * Homemodel
+ * HomeModel
  *----------------------------------*/
 class HomeModel{
     
@@ -24,6 +24,8 @@ class HomeModel{
      * いいね処理
      */
     func doIine(_ indexPath: IndexPath?){
+        
+        print("クリック")
         
         // 配列からタップされたインデックスのデータを取り出す
         let postData = postArray[indexPath!.row]
@@ -55,7 +57,7 @@ class HomeModel{
     /**
      * 検索処理
      */
-    func doInq(){
+    func doInq( _ target: HomeViewController){
         
         if Auth.auth().currentUser != nil {
             if self.observing == false {
@@ -70,7 +72,7 @@ class HomeModel{
                         self.postArray.insert(postData, at: 0)
                         
                         // TableViewを再表示する
-                        //self.tableView.reloadData()
+                        target.tableView.reloadData()
                     }
                 })
                 // 要素が変更されたら該当のデータをpostArrayから一度削除した後に新しいデータを追加してTableViewを再表示する
@@ -95,6 +97,9 @@ class HomeModel{
                         
                         // 削除したところに更新済みのデータを追加する
                         self.postArray.insert(postData, at: index)
+                        
+                        // TableViewを再表示する
+                        target.tableView.reloadData()
                     }
                 })
                 
@@ -107,6 +112,8 @@ class HomeModel{
                 // ログアウトを検出したら、一旦テーブルをクリアしてオブザーバーを削除する。
                 // テーブルをクリアする
                 postArray = []
+                // TableViewを再表示する
+                target.tableView.reloadData()
 
                 // オブザーバーを削除する
                 Database.database().reference().removeAllObservers()

@@ -61,11 +61,7 @@ class HomeViewController: UIViewController {
         printDebag("viewWillAppear")
         
         /** 検索処理 */
-        model.doInq()
-        
-        /** TableViewを再表示する */
-        self.tableView.reloadData()
-        
+        model.doInq(self)
     }
 }
 
@@ -85,6 +81,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
      * tableView
      */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         /** セルを取得してデータを設定する */
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PostTableViewCell
         cell.setPostData(model.getPostList()[indexPath.row])
@@ -107,18 +104,13 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
      */
     @objc func handleButton(_ sender: UIButton, forEvent event: UIEvent) {
         
-        printDebag("DEBUG_PRINT: likeボタンがタップされました。")
-        
-        // タップされたセルのインデックスを求める
+        /** タップされたセルのインデックスを求める */
         let touch = event.allTouches?.first
         let point = touch!.location(in: self.tableView)
         let indexPath = tableView.indexPathForRow(at: point)
         
         /** いいね更新 */
         model.doIine(indexPath)
-        
-        /** TableViewを再表示する */
-        //self.tableView.reloadData()
     }
 }
 

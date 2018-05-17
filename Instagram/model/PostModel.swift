@@ -6,9 +6,9 @@
 //  Copyright © 2018年 y.kawa. All rights reserved.
 //
 
-import Foundation
 import Firebase
 import FirebaseAuth
+import FirebaseDatabase
 
 /**---------------------------------*
  * PostModel

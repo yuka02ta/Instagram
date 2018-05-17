@@ -15,6 +15,7 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var likeLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var captionLabel: UILabel!
+    @IBOutlet weak var commentButton: UIButton!
 
     /**
      * awakeFromNib
@@ -54,5 +55,9 @@ class PostTableViewCell: UITableViewCell {
             let buttonImage = UIImage(named: Const.IMG_LIKE_NONE)
             self.likeButton.setImage(buttonImage, for: .normal)
         }
+        
+        /** コメント */
+        let buttonCommentImage = UIImage(named: Const.IMG_LIKE_NONE)
+        self.commentButton.setImage(buttonCommentImage, for: .normal)
     }
 }
