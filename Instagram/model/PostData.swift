@@ -11,7 +11,7 @@ import Firebase
 import FirebaseDatabase
 
 /**---------------------------------*
- * PostModel
+ * PostData
  *----------------------------------*/
 class PostData: NSObject {
     
@@ -37,6 +37,9 @@ class PostData: NSObject {
     
     /** 自分がいいねしたかどうかのフラグ */
     var isLiked: Bool = false
+    
+    /** コメント */
+    var commentList: [CommentData] = []
     
     /**
      * 初期処理
@@ -67,5 +70,32 @@ class PostData: NSObject {
                 break
             }
         }
+        
+        /** コメント */
+        if let commentList = valueDictionary["commentList"] as? [CommentData]{
+            self.commentList = commentList
+        }
+    }
+}
+
+/**---------------------------------*
+ * CommentData
+ *----------------------------------*/
+class CommentData: NSObject {
+    
+    var id: String?
+    var name: String?
+    var comment: String?
+    
+    /**
+     * 初期処理
+     */
+    init(snapshot: DataSnapshot, myId: String) {
+        self.id = snapshot.key
+        
+        let valueDictionary = snapshot.value as! [String: Any]
+        
+        self.name = valueDictionary["name"] as? String
+        self.comment = valueDictionary["comment"] as? String
     }
 }

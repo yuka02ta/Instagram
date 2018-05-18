@@ -17,6 +17,7 @@ import FirebaseDatabase
 class HomeViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var commentField: KeyBoard!
     
     var model: HomeModel = HomeModel()
     
@@ -31,6 +32,8 @@ class HomeViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
+        //commentField.isHidden = true
+        
         /** テーブルセルのタップを無効にする */
         tableView.allowsSelection = false
         
@@ -43,7 +46,7 @@ class HomeViewController: UIViewController {
 
         // テーブル行の高さの概算値を設定しておく
         // 高さ概算値 = 「縦横比1:1のUIImageViewの高さ(=画面幅)」+「いいねボタン、キャプションラベル、その他余白の高さの合計概算(=100pt)」
-        tableView.estimatedRowHeight = UIScreen.main.bounds.width + 100
+        tableView.estimatedRowHeight = UIScreen.main.bounds.width + 200
     }
     
     /**
@@ -88,6 +91,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
         
         /** セル内のボタンのアクションをソースコードで設定する */
         cell.likeButton.addTarget(self, action:#selector(handleButton(_:forEvent:)), for: .touchUpInside)
+        cell.commentButton.addTarget(self, action:#selector(handleButtonComment(_:forEvent:)), for: .touchUpInside)
         
         return cell
     }
@@ -111,6 +115,39 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
         
         /** いいね更新 */
         model.doIine(indexPath)
+    }
+    
+    /**
+     * コメント押下
+     */
+    @objc func handleButtonComment(_ sender: UIButton, forEvent event: UIEvent) {
+        
+        /** タップされたセルのインデックスを求める */
+        let touch = event.allTouches?.first
+        let point = touch!.location(in: self.tableView)
+        let indexPath = tableView.indexPathForRow(at: point)
+        
+//        let commentCtrl:CommentViewController = segue.destination as! CommentViewController
+//        commentCtrl.data = model.getPostList()[indexPath.row]
+        
+        /** ボタンが押されたらImageViewControllerをモーダルで表示する */
+        let commentCtrl = self.storyboard?.instantiateViewController(withIdentifier: Const.STORYBOAD_COMMENT) as! CommentViewController
+        commentCtrl.data = model.getPostList()[(indexPath?.row)!]
+        self.present(commentCtrl, animated: true, completion: nil)
+        
+        /** キーボード呼び出し */
+//        commentField.becomeFirstResponder()
+        
+        /** 飛んでく */
+        
+//        print(indexPath!.row)
+        //alertOk("コメント", self)
+        
+        
+    }
+    
+    @objc func test(){
+        alertOk("wa-", self)
     }
 }
 

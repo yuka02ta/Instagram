@@ -19,6 +19,7 @@ struct Const {
     static let STORYBOAD_IMAGE_SELECT: String = "ImageSelect"
     static let STORYBOAD_POST: String = "Post"
     static let STORYBOAD_SETTING: String = "Setting"
+    static let STORYBOAD_COMMENT: String = "Comment"
 
     /** ImagaName */
     static let IMG_HOME: String = "home"

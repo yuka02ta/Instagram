@@ -14,6 +14,9 @@ import CLImageEditor
  *----------------------------------*/
 class ImageSelectViewController: UIViewController, UINavigationControllerDelegate {
 
+    let imgPickerCtrl = UIImagePickerController()
+    let pickerCtrl = UIImagePickerController()
+    
     /**
      * viewDidLoad
      */
@@ -36,10 +39,9 @@ class ImageSelectViewController: UIViewController, UINavigationControllerDelegat
         /** ライブラリ（カメラロール）を指定してピッカーを開く */
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             
-            let pickerController = UIImagePickerController()
-            pickerController.delegate = self
-            pickerController.sourceType = .photoLibrary
-            self.present(pickerController, animated: false, completion: nil)
+            pickerCtrl.delegate = self
+            pickerCtrl.sourceType = .photoLibrary
+            self.present(pickerCtrl, animated: false, completion: nil)
         }
     }
     
@@ -51,10 +53,9 @@ class ImageSelectViewController: UIViewController, UINavigationControllerDelegat
         /** カメラを指定してピッカーを開く */
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             
-            let pickerController = UIImagePickerController()
-            pickerController.delegate = self
-            pickerController.sourceType = .camera
-            self.present(pickerController, animated: false, completion: nil)
+            imgPickerCtrl.delegate = self
+            imgPickerCtrl.sourceType = .camera
+            self.present(imgPickerCtrl, animated: false, completion: nil)
         }
     }
     
@@ -76,7 +77,7 @@ class ImageSelectViewController: UIViewController, UINavigationControllerDelegat
     /**
      * 写真を撮影/選択したときに呼ばれる
      */
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         if info[UIImagePickerControllerOriginalImage] != nil {
             /** 撮影/選択された画像を取得する */
