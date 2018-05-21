@@ -90,9 +90,9 @@ class CommentData: NSObject {
     /**
      * 初期処理
      */
-    init(snapshot: DataSnapshot, myId: String) {
+    init(snapshot: DataSnapshot) {
         self.id = snapshot.key
-        
+ 
         let valueDictionary = snapshot.value as! [String: Any]
         
         self.name = valueDictionary["name"] as? String

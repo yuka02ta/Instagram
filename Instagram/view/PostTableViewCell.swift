@@ -16,10 +16,14 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var commentButton: UIButton!
+    @IBOutlet weak var commentLabel: UILabel!
+    @IBOutlet weak var wrapView: UIView!
     
     @IBOutlet weak var commentTable: UITableView!
+    @IBOutlet weak var tableHeight: NSLayoutConstraint!
     
-    var postData: PostData?
+    
+    var postDataList: [PostData]?
     
     /**
      * awakeFromNib
@@ -38,12 +42,14 @@ class PostTableViewCell: UITableViewCell {
     /**
      * 表示内容をセット
      */
-    func setPostData(_ postData: PostData) {
+    func setPostData(_ index: Int, _ postDataList: [PostData]) {
         
         commentTable.delegate = self
         commentTable.dataSource = self
+        commentTable.tag = index
         
-        self.postData = postData
+        self.postDataList = postDataList
+        let postData = self.postDataList![index]
         
         /** 写真・キャプション */
         self.postImageView.image = postData.image
@@ -65,6 +71,10 @@ class PostTableViewCell: UITableViewCell {
             self.likeButton.setImage(buttonImage, for: .normal)
         }
         
+        /** コメント数 */
+        let commentNumber = postData.commentList.count
+        commentLabel.text = "(" + "\(commentNumber)" + "件)"
+        
         /** コメント */
         let buttonCommentImage = UIImage(named: Const.IMG_COMMENT)
         self.commentButton.setImage(buttonCommentImage, for: .normal)
@@ -74,14 +84,19 @@ class PostTableViewCell: UITableViewCell {
         let nib = UINib(nibName: "CommentTableViewCell", bundle: nil)
         self.commentTable.register(nib, forCellReuseIdentifier: "CommentCell")
         
-        // テーブル行の高さをAutoLayoutで自動調整する
-        //self.commentTable.rowHeight = UITableViewAutomaticDimensio
+        /** view */
+        self.wrapView.layer.borderWidth = 0.5
+        self.wrapView.layer.borderColor = UIColor.lightGray.cgColor
+        self.commentTable.layer.borderWidth = 0.5
+        self.commentTable.layer.borderColor = UIColor.lightGray.cgColor
+        if commentNumber == 0{
+            self.tableHeight.constant = 0
+        }else{
+            self.tableHeight.constant = 100
+        }
         
-        self.commentTable.rowHeight = 50 * 2
-        
-        // テーブル行の高さの概算値を設定しておく
-        // 高さ概算値 = 「縦横比1:1のUIImageViewの高さ(=画面幅)」+「いいねボタン、キャプションラベル、その他余白の高さの合計概算(=100pt)」
-        //self.commentTable.estimatedRowHeight = 50
+        /** TableViewを再表示する */
+        self.commentTable.reloadData()
     }
 }
 
@@ -94,13 +109,10 @@ extension PostTableViewCell: UITableViewDataSource, UITableViewDelegate{
      * tableView
      */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //
-        
-        if let data = self.postData?.commentList{
-           return data.count
-        }else{
-            return 0
-        }
+
+        let postData = postDataList![tableView.tag]
+        return postData.commentList.count
+
     }
     
     /**
@@ -110,11 +122,8 @@ extension PostTableViewCell: UITableViewDataSource, UITableViewDelegate{
         
         /** セルを取得してデータを設定する */
         let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentTableViewCell
-        
-        if let data = self.postData?.commentList[indexPath.row] {
-            cell.setCommentData(data)
-            print(data.comment!)
-        }
+        let postData = postDataList![tableView.tag]
+        cell.setCommentData(postData.commentList[indexPath.row])
         
         return cell
     }

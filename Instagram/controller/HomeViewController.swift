@@ -32,8 +32,6 @@ class HomeViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        //commentField.isHidden = true
-        
         /** テーブルセルのタップを無効にする */
         tableView.allowsSelection = false
         
@@ -87,7 +85,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
         
         /** セルを取得してデータを設定する */
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PostTableViewCell
-        cell.setPostData(model.getPostList()[indexPath.row])
+        cell.setPostData(indexPath.row, model.getPostList())
         
         /** セル内のボタンのアクションをソースコードで設定する */
         cell.likeButton.addTarget(self, action:#selector(handleButton(_:forEvent:)), for: .touchUpInside)
@@ -127,27 +125,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
         let point = touch!.location(in: self.tableView)
         let indexPath = tableView.indexPathForRow(at: point)
         
-//        let commentCtrl:CommentViewController = segue.destination as! CommentViewController
-//        commentCtrl.data = model.getPostList()[indexPath.row]
-        
         /** ボタンが押されたらImageViewControllerをモーダルで表示する */
         let commentCtrl = self.storyboard?.instantiateViewController(withIdentifier: Const.STORYBOAD_COMMENT) as! CommentViewController
         commentCtrl.data = model.getPostList()[(indexPath?.row)!]
         self.present(commentCtrl, animated: true, completion: nil)
-        
-        /** キーボード呼び出し */
-//        commentField.becomeFirstResponder()
-        
-        /** 飛んでく */
-        
-//        print(indexPath!.row)
-        //alertOk("コメント", self)
-        
-        
-    }
-    
-    @objc func test(){
-        alertOk("wa-", self)
     }
 }
 

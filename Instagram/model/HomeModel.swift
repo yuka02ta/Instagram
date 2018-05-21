@@ -24,9 +24,7 @@ class HomeModel{
      * いいね処理
      */
     func doIine(_ indexPath: IndexPath?){
-        
-        print("クリック")
-        
+
         // 配列からタップされたインデックスのデータを取り出す
         let postData = postArray[indexPath!.row]
         
@@ -66,24 +64,12 @@ class HomeModel{
                 postsRef.observe(.childAdded, with: { snapshot in
                     printDebag(".childAddedイベントが発生しました。")
                     
-                    // PostDataクラスを生成して受け取ったデータを設定する
+                    /** PostDataクラスを生成して受け取ったデータを設定する */
                     if let uid = Auth.auth().currentUser?.uid {
                         let postData = PostData(snapshot: snapshot, myId: uid)
                         self.postArray.insert(postData, at: 0)
                         
-                        // TableViewを再表示する
-                        target.tableView.reloadData()
-                    }
-                })
-                // 要素が変更されたら該当のデータをpostArrayから一度削除した後に新しいデータを追加してTableViewを再表示する
-                postsRef.observe(.childChanged, with: { snapshot in
-                    printDebag(".childChangedイベントが発生しました。")
-                    
-                    if let uid = Auth.auth().currentUser?.uid {
-                        // PostDataクラスを生成して受け取ったデータを設定する
-                        let postData = PostData(snapshot: snapshot, myId: uid)
-                        
-                        // 保持している配列からidが同じものを探す
+                        /** 保持している配列からidが同じものを探す */
                         var index: Int = 0
                         for post in self.postArray {
                             if post.id == postData.id {
@@ -92,14 +78,61 @@ class HomeModel{
                             }
                         }
                         
-                        // 差し替えるため一度削除する
-                        self.postArray.remove(at: index)
+                        /** コメントリストの取得 */
+                        postsRef.child(postData.id!).child("commentList").observe(.value, with: { snapshotSub in
+
+                            for itemSnapShot in snapshotSub.children {
+
+                                let commentData = CommentData(snapshot: itemSnapShot as! DataSnapshot)
+                                postData.commentList.append(commentData)
+                            }
+                            /** 差し替えるため一度削除する */
+                            self.postArray.remove(at: index)
+                            
+                            self.postArray.insert(postData, at: index)
+                            /** TableViewを再表示する */
+                            target.tableView.reloadData()
+                            
+                        })
                         
-                        // 削除したところに更新済みのデータを追加する
-                        self.postArray.insert(postData, at: index)
+                    }
+                })
+                // 要素が変更されたら該当のデータをpostArrayから一度削除した後に新しいデータを追加してTableViewを再表示する
+                postsRef.observe(.childChanged, with: { snapshot in
+                    printDebag(".childChangedイベントが発生しました。")
+                    
+                    if let uid = Auth.auth().currentUser?.uid {
+                        /** PostDataクラスを生成して受け取ったデータを設定する */
+                        let postData = PostData(snapshot: snapshot, myId: uid)
                         
-                        // TableViewを再表示する
-                        target.tableView.reloadData()
+                        /** 保持している配列からidが同じものを探す */
+                        var index: Int = 0
+                        for post in self.postArray {
+                            if post.id == postData.id {
+                                index = self.postArray.index(of: post)!
+                                break
+                            }
+                        }
+                        
+                        /** コメントリストの取得 */
+                        postsRef.child(postData.id!).child("commentList").observe(.value, with: { snapshotSub in
+                            
+                            for itemSnapShot in snapshotSub.children {
+                                
+                                let commentData = CommentData(snapshot: itemSnapShot as! DataSnapshot)
+                                postData.commentList.append(commentData)
+                            }
+                            
+                            /** 差し替えるため一度削除する */
+                            self.postArray.remove(at: index)
+                            
+                            /** 削除したところに更新済みのデータを追加する */
+                            self.postArray.insert(postData, at: index)
+                            
+                            /** TableViewを再表示する */
+                            target.tableView.reloadData()
+                            
+                        })
                     }
                 })
                 

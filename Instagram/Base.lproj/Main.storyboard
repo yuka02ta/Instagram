@@ -311,6 +311,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="06H-cQ-tFv">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
+                                <color key="backgroundColor" red="0.97592383623123169" green="0.97666221857070923" blue="0.97603815793991089" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="mAD-cL-yji"/>
+                                </constraints>
+                            </view>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="表示名" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="H16-0N-hSc">
                                 <rect key="frame" x="37" y="104" width="300" height="30"/>
                                 <constraints>
@@ -349,13 +356,6 @@
                                     <navigationItem title="設定" id="ypf-gx-oSg"/>
                                 </items>
                             </navigationBar>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="06H-cQ-tFv">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
-                                <color key="backgroundColor" red="0.97592383623123169" green="0.97666221857070923" blue="0.97603815793991089" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="mAD-cL-yji"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -366,7 +366,7 @@
                             <constraint firstAttribute="trailing" secondItem="06H-cQ-tFv" secondAttribute="trailing" id="Uwy-t2-VwG"/>
                             <constraint firstItem="wd8-do-zSP" firstAttribute="centerX" secondItem="GIB-Wc-bAf" secondAttribute="centerX" id="c8f-Ws-UUT"/>
                             <constraint firstItem="H16-0N-hSc" firstAttribute="top" secondItem="17f-E8-JHu" secondAttribute="bottom" constant="40" id="cXE-rC-GJJ"/>
-                            <constraint firstItem="06H-cQ-tFv" firstAttribute="top" secondItem="GIB-Wc-bAf" secondAttribute="top" id="ewb-u3-p7D"/>
+                            <constraint firstItem="06H-cQ-tFv" firstAttribute="top" secondItem="GIB-Wc-bAf" secondAttribute="top" id="fOk-4h-kGm"/>
                             <constraint firstItem="17f-E8-JHu" firstAttribute="top" secondItem="06H-cQ-tFv" secondAttribute="bottom" id="q2L-K8-GJI"/>
                             <constraint firstItem="17f-E8-JHu" firstAttribute="trailing" secondItem="eTg-9c-epo" secondAttribute="trailing" id="tLL-VK-EmI"/>
                             <constraint firstItem="06H-cQ-tFv" firstAttribute="leading" secondItem="GIB-Wc-bAf" secondAttribute="leading" id="xkI-zC-lbg"/>
