@@ -72,12 +72,12 @@ extension ViewController{
         let tabBarView = tabBarCtrl.view!
         tabBarView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tabBarView)
-        let safeArea = view.safeAreaLayoutGuide
+        //let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            tabBarView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            tabBarView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
-            tabBarView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            tabBarView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            tabBarView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            tabBarView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            tabBarView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            tabBarView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             ])
         tabBarCtrl.didMove(toParentViewController: self)
         

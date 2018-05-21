@@ -17,7 +17,9 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var commentLabel: UILabel!
+    @IBOutlet weak var commentNumLabel: UILabel!
     @IBOutlet weak var wrapView: UIView!
+    @IBOutlet weak var commentView: UIView!
     
     @IBOutlet weak var commentTable: UITableView!
     @IBOutlet weak var tableHeight: NSLayoutConstraint!
@@ -73,7 +75,8 @@ class PostTableViewCell: UITableViewCell {
         
         /** コメント数 */
         let commentNumber = postData.commentList.count
-        commentLabel.text = "(" + "\(commentNumber)" + "件)"
+        self.commentLabel.text = "(" + "\(commentNumber)" + "件)"
+        self.commentNumLabel.text = "\(commentNumber)"
         
         /** コメント */
         let buttonCommentImage = UIImage(named: Const.IMG_COMMENT)
@@ -89,10 +92,19 @@ class PostTableViewCell: UITableViewCell {
         self.wrapView.layer.borderColor = UIColor.lightGray.cgColor
         self.commentTable.layer.borderWidth = 0.5
         self.commentTable.layer.borderColor = UIColor.lightGray.cgColor
+        self.commentView.layer.borderWidth = 0.5
+        self.commentView.layer.borderColor = UIColor.lightGray.cgColor
         if commentNumber == 0{
             self.tableHeight.constant = 0
-        }else{
+            self.commentView.isHidden = true
+        }
+        else if commentNumber == 1{
+            self.tableHeight.constant = 55
+            self.commentView.isHidden = false
+        }
+        else{
             self.tableHeight.constant = 100
+            self.commentView.isHidden = false
         }
         
         /** TableViewを再表示する */
