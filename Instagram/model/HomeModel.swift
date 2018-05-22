@@ -25,17 +25,17 @@ class HomeModel{
      */
     func doIine(_ indexPath: IndexPath?){
 
-        // 配列からタップされたインデックスのデータを取り出す
+        /** 配列からタップされたインデックスのデータを取り出す */
         let postData = postArray[indexPath!.row]
         
-        // Firebaseに保存するデータの準備
+        /** Firebaseに保存するデータの準備 */
         if let uid = Auth.auth().currentUser?.uid {
             if postData.isLiked {
-                // すでにいいねをしていた場合はいいねを解除するためIDを取り除く
+                /** すでにいいねをしていた場合はいいねを解除するためIDを取り除く */
                 var index = -1
                 for likeId in postData.likes {
                     if likeId == uid {
-                        // 削除するためにインデックスを保持しておく
+                        /** 削除するためにインデックスを保持しておく */
                         index = postData.likes.index(of: likeId)!
                         break
                     }
@@ -67,36 +67,25 @@ class HomeModel{
                     /** PostDataクラスを生成して受け取ったデータを設定する */
                     if let uid = Auth.auth().currentUser?.uid {
                         let postData = PostData(snapshot: snapshot, myId: uid)
-                        self.postArray.insert(postData, at: 0)
-                        
-                        /** 保持している配列からidが同じものを探す */
-                        var index: Int = 0
-                        for post in self.postArray {
-                            if post.id == postData.id {
-                                index = self.postArray.index(of: post)!
-                                break
-                            }
-                        }
-                        
-                        /** コメントリストの取得 */
-                        postsRef.child(postData.id!).child("commentList").observe(.value, with: { snapshotSub in
-
+ 
+                         /** コメント取得 */
+                        postsRef.child(postData.id!).child("commentList").observeSingleEvent(of: .value, with: {snapshotSub in
+                            
+                            /** コメントリストセット */
                             for itemSnapShot in snapshotSub.children {
 
                                 let commentData = CommentData(snapshot: itemSnapShot as! DataSnapshot)
                                 postData.commentList.append(commentData)
                             }
-                            /** 差し替えるため一度削除する */
-                            self.postArray.remove(at: index)
+
+                            self.postArray.insert(postData, at: 0)
                             
-                            self.postArray.insert(postData, at: index)
                             /** TableViewを再表示する */
                             target.tableView.reloadData()
-                            
                         })
-                        
                     }
                 })
+                
                 // 要素が変更されたら該当のデータをpostArrayから一度削除した後に新しいデータを追加してTableViewを再表示する
                 postsRef.observe(.childChanged, with: { snapshot in
                     printDebag(".childChangedイベントが発生しました。")
